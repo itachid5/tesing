@@ -1,9 +1,14 @@
 FROM ubuntu:22.04
 
-# ইনস্টলেশনের সময় যেকোনো পপ-আপ বা প্রম্পট বন্ধ করার জন্য
+# ইনস্টলেশনের সময় যেকোনো পপ-আপ বন্ধ করা
 ENV DEBIAN_FRONTEND=noninteractive
 
-# ধাপ ১: শুধু বেসিক টুলস এবং SSH (অপ্রয়োজনীয় ফাইল ছাড়া)
+# Render-এর নেটওয়ার্ক/টাইমআউট সমস্যা সমাধানের জন্য IPv4 ফোর্স এবং Mirror সেট করা
+RUN echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4 && \
+    sed -i 's/archive.ubuntu.com/mirror.math.princeton.edu/g' /etc/apt/sources.list && \
+    sed -i 's/security.ubuntu.com/mirror.math.princeton.edu/g' /etc/apt/sources.list
+
+# ধাপ ১: শুধু বেসিক টুলস এবং SSH
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl wget git sudo nano openssh-server ca-certificates \
     && rm -rf /var/lib/apt/lists/*
