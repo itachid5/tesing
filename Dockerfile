@@ -3,10 +3,10 @@ FROM ubuntu:22.04
 # ইনস্টলেশনের সময় যেকোনো পপ-আপ বন্ধ করা
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Render-এর নেটওয়ার্ক/টাইমআউট সমস্যা সমাধানের জন্য IPv4 ফোর্স এবং Mirror সেট করা
+# Kernel.org এর সুপার ফাস্ট মিরর ব্যবহার করা এবং IPv4 ফোর্স করা
 RUN echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4 && \
-    sed -i 's/archive.ubuntu.com/mirror.math.princeton.edu/g' /etc/apt/sources.list && \
-    sed -i 's/security.ubuntu.com/mirror.math.princeton.edu/g' /etc/apt/sources.list
+    sed -i 's/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list && \
+    sed -i 's/security.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
 
 # ধাপ ১: শুধু বেসিক টুলস এবং SSH
 RUN apt-get update && apt-get install -y --no-install-recommends \
