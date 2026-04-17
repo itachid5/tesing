@@ -1,12 +1,13 @@
-FROM ubuntu:22.04
+# লেটেস্ট উবুন্টু ২৪.০৪ (Noble Numbat) ব্যবহার করা হলো
+FROM ubuntu:24.04
 
 # ইনস্টলেশনের সময় যেকোনো পপ-আপ বন্ধ করা
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Kernel.org এর সুপার ফাস্ট মিরর ব্যবহার করা এবং IPv4 ফোর্স করা
+# Kernel.org এর সুপার ফাস্ট মিরর ব্যবহার করা (২৪.০৪ এর নতুন ubuntu.sources ফাইল প্যাথ অনুযায়ী)
 RUN echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4 && \
-    sed -i 's/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list && \
-    sed -i 's/security.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list
+    sed -i 's/archive.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list.d/ubuntu.sources && \
+    sed -i 's/security.ubuntu.com/mirrors.kernel.org/g' /etc/apt/sources.list.d/ubuntu.sources
 
 # ধাপ ১: শুধু বেসিক টুলস এবং SSH
 RUN apt-get update && apt-get install -y --no-install-recommends \
